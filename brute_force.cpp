@@ -129,8 +129,8 @@ int main( int argc, char* argv[]) {
     auto start_time = std::chrono::high_resolution_clock::now();
   
     // get inputs 
-    int N=atoi(argv[2]);
-    int nr=atoi(argv[1])*N; 
+    int nr=atoi(argv[1]); 
+    int N=atoi(argv[2])*nr; //boxes per rank
     int mean=atoi(argv[3]);
     int stddev=atoi(argv[4]);
 
