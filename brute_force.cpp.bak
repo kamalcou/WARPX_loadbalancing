@@ -1,0 +1,81 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <random>
+#include <chrono>
+
+using namespace std;
+
+int get_rn(int *ranks, int N){
+ 
+    int nr = 0;
+    for (int i = 0; i < N; i++) {
+        while (i < N - 1 && ranks[i] == ranks[i + 1])
+            i++;
+        nr++;
+    }
+    return nr;
+}
+
+int get_all_combos(int len, int nr, int *combo, double *guess){
+	ofstream myfile;
+	myfile.open("combinations.txt");
+        do { 
+
+	        // Get max time
+		double maxt = 0;
+		for (int i=0;i<nr;i++){
+	                double temp_maxt=0;
+			for (int j=0;j<len;j++){
+                            if (combo[j]==i){
+	      		        temp_maxt+=guess[j];
+			}
+		    }
+		    if (temp_maxt>maxt){
+                    maxt=temp_maxt;
+		    }
+		}
+                
+		// Print results
+		for (int i = 0; i < len; i++) {
+		  myfile << combo[i] << " ";
+	      }
+	      myfile << maxt<< std::endl;
+          } while (next_permutation(combo, combo + len)); 
+
+	myfile.close();
+        return 0;
+}
+
+
+int main() {
+
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    // generate array of ranks
+    int ranks[] = {1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 3, 3, 3, 3};
+    int N=sizeof(ranks)/sizeof(int);
+    sort(ranks, ranks + N);
+    int nr=get_rn(ranks,N);
+
+    //generate array of guesses with normal distribution
+    std::default_random_engine generator;
+    std::normal_distribution<double> distribution(5.0,2.0);
+    double guess[N];
+    ofstream myfile;
+    myfile.open("guesses.txt");
+    for (int i=0;i<N;i++){
+        guess[i]=distribution(generator);
+	myfile << ranks[i] << " " << guess[i] << endl;;
+    }
+    myfile.close();
+    get_all_combos(N,nr,ranks,guess);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
+
+    std::cout << "Time taken: " << elapsed_time.count() << " seconds" << std::endl;
+
+
+    return 0;
+}
