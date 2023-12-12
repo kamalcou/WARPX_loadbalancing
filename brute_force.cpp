@@ -122,15 +122,15 @@ void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 int main( int argc, char* argv[]) {
 
     if (argc!=5){
-    cout<< "usage: ./a.out Nrank Nbox mean stddev" <<endl;
+    cout<< "usage: ./a.out Nrank_per_box Nbox mean stddev" <<endl;
     return 0;
     }
     else{
     auto start_time = std::chrono::high_resolution_clock::now();
   
     // get inputs 
-    int nr=atoi(argv[1]);
     int N=atoi(argv[2]);
+    int nr=atoi(argv[1])*N; 
     int mean=atoi(argv[3]);
     int stddev=atoi(argv[4]);
 
