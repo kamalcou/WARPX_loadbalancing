@@ -3,79 +3,161 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
-
+#include <cstring>
 using namespace std;
 
-int get_rn(int *ranks, int N){
- 
-    int nr = 0;
-    for (int i = 0; i < N; i++) {
-        while (i < N - 1 && ranks[i] == ranks[i + 1])
-            i++;
-        nr++;
+int ln;
+
+int countDistinct(int *arr, int n)
+{
+    int res = 1;
+
+    for (int i = 1; i < n; i++) {
+	int j = 0;
+        for (j = 0; j < i; j++)
+            if (arr[i] == arr[j])
+                break;
+
+        if (i == j){
+            res++;
+	}
     }
-    return nr;
+    return res;
 }
 
-int get_all_combos(int len, int nr, int *combo, double *guess){
-	ofstream myfile;
-	myfile.open("combinations.txt");
-        do { 
+char* getfn(int it, char* b, char* c)
+{
+    char * fn = new char[7+std::strlen(b)+strlen(c)+5];
+    if (it == 1){
+        std::strcpy(fn,"guess_");
+    }
+    else if(it == 2){
+        std::strcpy(fn,"ranks_");
+    }
+    else if(it == 3){
+        std::strcpy(fn,"combo_");
+    }
+    std::strcat(fn,b);
+    std::strcat(fn,"_");
+    std::strcat(fn,c);
+    std::strcat(fn,".txt");
 
-	        // Get max time
-		double maxt = 0;
-		for (int i=0;i<nr;i++){
-	                double temp_maxt=0;
-			for (int j=0;j<len;j++){
-                            if (combo[j]==i){
-	      		        temp_maxt+=guess[j];
-			}
-		    }
-		    if (temp_maxt>maxt){
-                    maxt=temp_maxt;
-		    }
-		}
-                
-		// Print results
-		for (int i = 0; i < len; i++) {
-		  myfile << combo[i] << " ";
-	      }
-	      myfile << maxt<< std::endl;
-          } while (next_permutation(combo, combo + len)); 
+    return fn;
+}
 
-	myfile.close();
-        return 0;
+double get_maxt(int *rank, double *guess, int len) {
+    int nrt = countDistinct(rank,len); // get number of unique ranks for this solution
+    double maxg[nrt];
+    double maxt=0;
+    for (int r=0;r<nrt;r++){ // for every rank
+        for (int i=0;i<len;i++) { //for every element
+            if(rank[i]==r){
+                maxg[r]+=guess[i]; // this guess is on rank r so add to the sum
+            }
+        }
+        if (maxg[r]>maxt){
+            maxt=maxg[r];
+        }
+    }
+
+    return maxt;
 }
 
 
-int main() {
+void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, int tot, int last, int index, int *combos, double *guesses) {
+    for (int i=0;i<nr;i++){
+        combo[index]=ranks[i];
+	if (index == last){
+//	     guesses[i+index]=get_maxt(combo,guess,len);    
+	     for (int j=0;j<len;j++){ 
+	        cout << ln*len+j<< ", ";
+	        combos[ln*len+j]=combo[j];
+	     }
+             ln++;
+//	     cout<<ln <<endl;
+//	     cout << guesses[i+index] << endl;
+	}
+    else
+	recursively_fill(ranks, combo, guess, len, nr, tot, last, index+1, combos, guesses);
+    }
+}
+     
 
+void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
+
+    int tot = int(pow(len,nr));
+    int combo[len]={-1};
+    double guesses[tot]={-1};
+    int combos[len*tot]={-1};
+    ln=0;
+    recursively_fill(ranks,combo,guess,len, nr,tot,len-1,0,combos,guesses);
+    cout<< "filled" << endl; 
+    ofstream myfile;
+    myfile.open(fn);
+    cout << "------------------------------------------------" << endl;
+    for (int i=0;i<tot;i++){
+        for (int j=0;j<len;j++){
+            cout << combos[i*len+j] << " " ; 
+    }
+        cout << endl;
+    }
+	//cout << guesses[i] << endl;
+    myfile.close();
+    }
+
+
+int main( int argc, char* argv[]) {
+
+    if (argc!=5){
+    cout<< "usage: ./a.out Nrank Nbox mean stddev" <<endl;
+    return 0;
+    }
+    else{
     auto start_time = std::chrono::high_resolution_clock::now();
+  
+    // get inputs 
+    int nr=atoi(argv[1]);
+    int N=atoi(argv[2]);
+    int mean=atoi(argv[3]);
+    int stddev=atoi(argv[4]);
 
-    // generate array of ranks
-    int ranks[] = {1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 3, 3, 3, 3};
-    int N=sizeof(ranks)/sizeof(int);
-    sort(ranks, ranks + N);
-    int nr=get_rn(ranks,N);
+    // initialize arrays
+    double guess[N];
+    int ranks[nr];
+    // generate filenames
+    char * guess_fn = getfn(1,argv[3],argv[4]);
+    char * ranks_fn = getfn(2,argv[3],argv[4]);
+    char * combo_fn = getfn(3,argv[3],argv[4]);
+    ofstream myfile;
+    myfile.open(ranks_fn);
+
+    for (int i = 0; i<nr;i++){
+        ranks[i]=i;
+        myfile << ranks[i] << " ";
+    }
+    myfile.close();
 
     //generate array of guesses with normal distribution
     std::default_random_engine generator;
-    std::normal_distribution<double> distribution(5.0,2.0);
-    double guess[N];
-    ofstream myfile;
-    myfile.open("guesses.txt");
+    std::normal_distribution<double> distribution(mean,stddev);
+    myfile.open(guess_fn);
     for (int i=0;i<N;i++){
         guess[i]=distribution(generator);
-	myfile << ranks[i] << " " << guess[i] << endl;;
+	if (guess[i]<0){
+	    cout<<"negative guess, make mean higher or standard devation smaller"<<endl;
+            exit(0);
+	}
+	myfile << guess[i] << " ";
     }
     myfile.close();
-    get_all_combos(N,nr,ranks,guess);
+    get_all_combos(N,nr,guess,ranks,combo_fn);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
-    std::cout << "Time taken: " << elapsed_time.count() << " seconds" << std::endl;
+    cout << "Time taken: " << elapsed_time.count() << " seconds" << endl;
 
 
     return 0;
+}
 }
