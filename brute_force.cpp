@@ -6,6 +6,7 @@
 #include <cstring>
 using namespace std;
 
+int ln;
 
 int countDistinct(int *arr, int n)
 {
@@ -63,29 +64,44 @@ double get_maxt(int *rank, double *guess, int len) {
 }
 
 
-void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, int last, int index, ofstream& myfile) {
+void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, int tot, int last, int index, int *combos, double *guesses) {
     for (int i=0;i<nr;i++){
         combo[index]=ranks[i];
 	if (index == last){
-	     double maxt=get_maxt(combo,guess,len);     
+//	     guesses[i+index]=get_maxt(combo,guess,len);    
 	     for (int j=0;j<len;j++){ 
-		myfile << combo[j] << " "; 
-			
+	        cout << ln*len+j<< ", ";
+	        combos[ln*len+j]=combo[j];
 	     }
-		myfile << maxt << endl;
+             ln++;
+//	     cout<<ln <<endl;
+//	     cout << guesses[i+index] << endl;
 	}
     else
-	recursively_fill(ranks, combo, guess, len, nr, last, index+1, myfile);
+	recursively_fill(ranks, combo, guess, len, nr, tot, last, index+1, combos, guesses);
     }
 }
      
 
 void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 
+    int tot = int(pow(len,nr));
     int combo[len]={-1};
+    double guesses[tot]={-1};
+    int combos[len*tot]={-1};
+    ln=0;
+    recursively_fill(ranks,combo,guess,len, nr,tot,len-1,0,combos,guesses);
+    cout<< "filled" << endl; 
     ofstream myfile;
     myfile.open(fn);
-    recursively_fill(ranks,combo,guess,len, nr,len-1,0,myfile);
+    cout << "------------------------------------------------" << endl;
+    for (int i=0;i<tot;i++){
+        for (int j=0;j<len;j++){
+            cout << combos[i*len+j] << " " ; 
+    }
+        cout << endl;
+    }
+	//cout << guesses[i] << endl;
     myfile.close();
     }
 
