@@ -122,7 +122,7 @@ void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 int main( int argc, char* argv[]) {
 
     if (argc!=5){
-    cout<< "usage: ./a.out Nrank_per_box Nbox mean stddev" <<endl;
+    cout<< "usage: ./a.out Nranks Nbox_per_rank mean stddev" <<endl;
     return 0;
     }
     else{
