@@ -24,7 +24,7 @@ int countDistinct(int *arr, int n)
     return res;
 }
 
-char* getfn(int it, char* b, char* c)
+char* getfn(int it, char* b, char* c, char* d)
 {
     char * fn = new char[7+std::strlen(b)+strlen(c)+5];
     if (it == 1){
@@ -39,6 +39,8 @@ char* getfn(int it, char* b, char* c)
     std::strcat(fn,b);
     std::strcat(fn,"_");
     std::strcat(fn,c);
+    std::strcat(fn,"_it");
+    std::strcat(fn,d);
     std::strcat(fn,".txt");
 
     return fn;
@@ -125,8 +127,8 @@ void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 
 int main( int argc, char* argv[]) {
 
-    char * itn;
-    if (argc!=5){
+    char *itn = new char[10];
+    if (argc!=5 and argc!=6){
     cout<< "usage: ./a.out Nranks Nbox_per_rank mean stddev" <<endl;
     return 0;
     } 
@@ -138,13 +140,20 @@ int main( int argc, char* argv[]) {
     int N=atoi(argv[2])*nr; //boxes per rank is the new input
     int mean=atoi(argv[3]);
     int stddev=atoi(argv[4]);
+    if(argc==6){
+        itn=argv[5];
+    } 
+    else{
+	    std::strcpy(itn,"0\0");
+    }
+    // initialize arrays
     double guess [N];
     int ranks [N];
 
     // generate filenames
-    char * guess_fn = getfn(1,argv[3],argv[4]);
-    char * ranks_fn = getfn(2,argv[3],argv[4]);
-    char * combo_fn = getfn(3,argv[3],argv[4]);
+    char * guess_fn = getfn(1,argv[3],argv[4],itn);
+    char * ranks_fn = getfn(2,argv[3],argv[4],itn);
+    char * combo_fn = getfn(3,argv[3],argv[4],itn);
 
     ofstream myfile;
     myfile.open(ranks_fn);
