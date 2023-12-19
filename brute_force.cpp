@@ -26,7 +26,7 @@ int countDistinct(int *arr, int n)
 
 char* getfn(int it, char* b, char* c, char* d)
 {
-    char * fn = new char[7+std::strlen(b)+strlen(c)+5];
+    char * fn = new char[20+std::strlen(b)+strlen(c)+5];
     if (it == 1){
         std::strcpy(fn,"guess_");
     }
@@ -63,7 +63,7 @@ double get_maxt(int *rank, double *guess, int len,int nr) {
 }
 
 
-void recursively_fill_array(int *ranks, int *combo, double *guess, int &ln, int len, int nr, int tot, int last, int index, int *combos, double *guesses) {
+void recursively_fill_array(int *ranks, int *combo, double *guess, int &ln, int len, int nr, double tot, int last, int index, int *combos, double *guesses) {
     for (int i=0;i<nr;i++){
         combo[index]=ranks[i];
 	if (index == last){
@@ -78,6 +78,30 @@ void recursively_fill_array(int *ranks, int *combo, double *guess, int &ln, int 
     }
     return;
 }
+
+
+void loop_fill(int *ranks, int *combo, double *guess, double tot, int len, int nr, int last, int index, ofstream& myfile) {
+    cout<<index<<" of "<<tot<<endl;
+    double count=0;
+    while (count<=tot){
+        for (int j=0;j<last;j++){
+            for (int i=0;i<nr;i++){
+                combo[index]=ranks[i];
+                if (index == last){
+                    double maxt=get_maxt(combo,guess,len,nr);
+                    for (int j=0;j<len;j++){
+                        myfile << combo[j] << " ";
+                     }
+                     myfile << maxt << endl;
+                }
+                else
+                    index++;
+	    }
+         }
+	count++;
+     }
+}
+
 
 void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, int last, int index, ofstream& myfile) {
     for (int i=0;i<nr;i++){
@@ -98,28 +122,32 @@ void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, in
 
 void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 
-    int tot = int(pow(len,nr));
+    double tot = double(pow(len,nr));
+    cout<<"tot: "<< tot <<" "<< len <<" "<<nr<<endl;
     int combo[len];
     int ln=0;
 
+
+    cout<<"open file"<<endl;
     ofstream myfile;
     myfile.open(fn);
-    if (array_true == true){ 
-        double *guesses=(double*)malloc(tot);
-        int *combos=(int*)malloc(len*tot);
-        recursively_fill_array(ranks,combo,guess,ln, len, nr,tot,len-1,0,combos,guesses);
-        for (int i=0;i<tot;i++){
-            for (int j=0;j<len;j++){
-                myfile << combos[i*len+j] << " " ; 
-            }
-            myfile << guesses[i] << endl;
-        }
-        free(guesses);
-        free(combos);
-    }
-    else{
-            recursively_fill(ranks,combo,guess,len, nr,len-1,0,myfile);
-	} 
+  //  if (array_true == true){ 
+  //      double *guesses=(double*)malloc(tot);
+  //      int *combos=(int*)malloc(len*tot);
+  //      recursively_fill_array(ranks,combo,guess,ln, len, nr,tot,len-1,0,combos,guesses);
+ //       for (double i=0;i<tot;i++){
+ //           for (int j=0;j<len;j++){
+ //               myfile << combos[i*len+j] << " " ; 
+ //           }
+ //           myfile << guesses[i] << endl;
+ //       }
+ //       free(guesses);
+ //       free(combos);
+//    }
+//    else{
+	    cout<<"fill"<<endl;
+            loop_fill(ranks,combo,guess,tot,len, nr,len-1,0,myfile);
+	//} 
     myfile.close();
     return;
     }
@@ -127,6 +155,8 @@ void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 
 int main( int argc, char* argv[]) {
 
+
+    cout<<"start" <<endl;
     char *itn = new char[10];
     if (argc!=5 and argc!=6){
     cout<< "usage: ./a.out Nranks Nbox_per_rank mean stddev" <<endl;
@@ -134,6 +164,7 @@ int main( int argc, char* argv[]) {
     } 
     else{
 
+    cout<<"start timer" <<endl;
     auto start_time = std::chrono::high_resolution_clock::now();
     // get inputs 
     int nr=atoi(argv[1]); 
@@ -146,9 +177,11 @@ int main( int argc, char* argv[]) {
     else{
 	    std::strcpy(itn,"0\0");
     }
+    cout<<"init"<<endl;
     // initialize arrays
     double guess [N];
     int ranks [N];
+    cout<<"get filenames"<<endl;
 
     // generate filenames
     char * guess_fn = getfn(1,argv[3],argv[4],itn);
@@ -177,14 +210,13 @@ int main( int argc, char* argv[]) {
     }
     myfile.close();
 
+    cout<<"get all combos"<<endl;
     get_all_combos(N,nr,guess,ranks,combo_fn);
-
+    cout<<"got combos"<<endl;
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
     cout << "Time taken: " << elapsed_time.count() << " seconds" << endl;
-//    free(guess);
-//    free(ranks);
 
     return 0;
 }
