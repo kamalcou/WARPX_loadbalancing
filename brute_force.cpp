@@ -30,7 +30,7 @@ char* getfn(int it, char* b, char* c, char* d)
     if (it == 1)std::strcpy(fn,"guess_");
     else if(it == 2)std::strcpy(fn,"ranks_");
     else if(it == 3)std::strcpy(fn,"combo_");
-    else if(it == 4)std::strcpy(fn,"temps_");
+    else if(it == 4)std::strcpy(fn,"norep_");
     std::strcat(fn,b);
     std::strcat(fn,"_");
     std::strcat(fn,c);
@@ -116,11 +116,8 @@ void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, in
 int* ternary(int n, int b,int len) {
     int * nums = new int[len];
     for(int i=0;i<len;i++) nums[i]=0;
-  //  if (n==0) return nums;
     int L=len;
     while (n){
-//int n = (int)n / b;
-//        int r = n % b;
         auto dv= std::div(n,b);
         n = dv.quot;
 	int r = dv.rem;
