@@ -27,15 +27,10 @@ int countDistinct(int *arr, int n)
 char* getfn(int it, char* b, char* c, char* d)
 {
     char * fn = new char[20+std::strlen(b)+strlen(c)+5];
-    if (it == 1){
-        std::strcpy(fn,"guess_");
-    }
-    else if(it == 2){
-        std::strcpy(fn,"ranks_");
-    }
-    else if(it == 3){
-        std::strcpy(fn,"combo_");
-    }
+    if (it == 1)std::strcpy(fn,"guess_");
+    else if(it == 2)std::strcpy(fn,"ranks_");
+    else if(it == 3)std::strcpy(fn,"combo_");
+    else if(it == 4)std::strcpy(fn,"temps_");
     std::strcat(fn,b);
     std::strcat(fn,"_");
     std::strcat(fn,c);
@@ -140,7 +135,7 @@ int* ternary(int n, int b,int len) {
  
 }
     
-void basechange_fill(int len, int nr,ofstream& myfile) {
+void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
     int i=0;
     while(true){
         int * combo = new int[len+1];
@@ -152,10 +147,11 @@ void basechange_fill(int len, int nr,ofstream& myfile) {
             combo=ternary(i,nr,len);
             if (combo[0]==-1) return;
         }
+        double maxt=get_maxt(combo,guess,len,nr);
         for (int j=0;j<len;j++){
 	    myfile<<combo[j]<<" ";
 	}
-	myfile<<endl;
+	myfile<<maxt<<endl;
 	i++;
 	} 
 }
@@ -169,10 +165,107 @@ void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
 
     ofstream myfile;
     myfile.open(fn);
-    basechange_fill(len, nr,myfile);
+    basechange_fill(len, nr,guess,myfile);
     myfile.close();
     return;
     }
+
+//vector<string> split(const char *str, char c = ' ')
+//{
+
+//    std::vector<std::string> result;
+
+//    do
+//    {
+//        const char *begin = str;
+//
+//        while(*str != c && *str)
+//            str++;
+//
+//        result.push_back(std::string(begin, str));
+//    } while (0 != *str++);
+//
+//    return result;
+//}
+
+void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
+    
+    ifstream myfile;
+    myfile.open(fn);
+    ofstream myfile2;
+    myfile2.open(tfn);
+
+    std::string line;
+    while(std::getline(myfile,line))
+    {
+        int * combo = new int[len+1];
+	std::string r;
+	double guess;
+	int j=0;
+	int z=0;
+        for (int i=0;i<line.length();i++)
+	{
+	    if((line[i]!=' ')&&(i<line.length()-1))
+	    {
+                if(z==0){
+		    r=line[i];
+		}
+		else{
+                    r+=line[i];
+		}
+		z++;
+	    }
+	    else
+	    { //we have reached a space or the end of the line, store what we read and reset r
+                if(j<len and i>0)
+		{
+	            //cout<<"r: "<<r<<endl;		   
+                    combo[j]=stoi(r);
+		    z=0;
+	            j++;
+		}
+		if(j==len)
+		{
+                    guess=stof(r);
+	//	    cout<<r<<endl;
+		}
+	    }
+	    if(line[i]=='\n') break;     
+	}
+	cout<<line<<endl;
+	for (int i=0;i<len;i++) cout<< combo[i]<< " ";
+	cout<< guess<<endl;
+    }
+/*    string line;
+    
+    { 
+	std::string delimiter=" ";
+	size_t pos = 0;
+        std::string tokens;
+
+	int ranks[len-1];
+	double guess;
+	cout<<line<<endl;
+        while (((pos = line.find(delimiter)) != std::string::npos) or ((pos = line.find("\n")) != std::string::npos)) {
+            tokens = line.substr(0, pos);
+          
+	  
+	    cout << tokens << " ";
+            line.erase(0, pos + delimiter.length());
+        }
+	cout<<endl;
+     //   cout<<tokens.size()<<endl;
+//	cout<<tokens[tokens.size()-1]<<endl;
+//	for (int i=0;i<tokens.size();i++) cout <<tokens[i] <<" ";
+//	cout<<endl;
+//	for (int i=0;i<len+1;i++) cout<<tokens[i] <<" ";
+//	cout<<endl;
+	cout<<"________________________"<<endl;
+    }
+*/
+    myfile2.close();
+    myfile.close();
+}
 
 
 int main( int argc, char* argv[]) {
@@ -205,6 +298,7 @@ int main( int argc, char* argv[]) {
     char * guess_fn = getfn(1,argv[3],argv[4],itn);
     char * ranks_fn = getfn(2,argv[3],argv[4],itn);
     char * combo_fn = getfn(3,argv[3],argv[4],itn);
+    char * temps_fn = getfn(4,argv[3],argv[4],itn);
 
     ofstream myfile;
     myfile.open(ranks_fn);
@@ -229,6 +323,7 @@ int main( int argc, char* argv[]) {
     myfile.close();
 
     get_all_combos(N,nr,guess,ranks,combo_fn);
+    eliminate_repetitions(N,nr,combo_fn,temps_fn);
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
