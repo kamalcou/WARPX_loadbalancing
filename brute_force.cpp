@@ -170,23 +170,31 @@ void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
     return;
     }
 
-//vector<string> split(const char *str, char c = ' ')
-//{
-
-//    std::vector<std::string> result;
-
-//    do
-//    {
-//        const char *begin = str;
-//
-//        while(*str != c && *str)
-//            str++;
-//
-//        result.push_back(std::string(begin, str));
-//    } while (0 != *str++);
-//
-//    return result;
-//}
+void countFreq(int arr[], int n, int *ranks, int *freqs)
+{
+    // Mark all array elements as not visited
+    vector<bool> visited(n, false);
+ 
+    // Traverse through array elements and
+    // count frequencies
+    for (int i = 0; i < n; i++) {
+ 
+        // Skip this element if already processed
+        if (visited[i] == true)
+            continue;
+ 
+        // Count frequency
+        int count = 1;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j]) {
+                visited[j] = true;
+                count++;
+            }
+        }
+        ranks[i]=arr[i];
+        freqs[i]=count;
+    }
+}
 
 void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
     
@@ -198,7 +206,8 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
     std::string line;
     while(std::getline(myfile,line))
     {
-        int * combo = new int[len+1];
+	bool write=true;
+        int * combo = new int[len];
 	std::string r;
 	double guess;
 	int j=0;
@@ -219,7 +228,6 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
 	    { //we have reached a space or the end of the line, store what we read and reset r
                 if(j<len and i>0)
 		{
-	            //cout<<"r: "<<r<<endl;		   
                     combo[j]=stoi(r);
 		    z=0;
 	            j++;
@@ -227,42 +235,32 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
 		if(j==len)
 		{
                     guess=stof(r);
-	//	    cout<<r<<endl;
 		}
 	    }
-	    if(line[i]=='\n') break;     
 	}
-	cout<<line<<endl;
-	for (int i=0;i<len;i++) cout<< combo[i]<< " ";
-	cout<< guess<<endl;
-    }
-/*    string line;
-    
-    { 
-	std::string delimiter=" ";
-	size_t pos = 0;
-        std::string tokens;
+      
 
-	int ranks[len-1];
-	double guess;
-	cout<<line<<endl;
-        while (((pos = line.find(delimiter)) != std::string::npos) or ((pos = line.find("\n")) != std::string::npos)) {
-            tokens = line.substr(0, pos);
-          
-	  
-	    cout << tokens << " ";
-            line.erase(0, pos + delimiter.length());
-        }
-	cout<<endl;
-     //   cout<<tokens.size()<<endl;
-//	cout<<tokens[tokens.size()-1]<<endl;
-//	for (int i=0;i<tokens.size();i++) cout <<tokens[i] <<" ";
-//	cout<<endl;
-//	for (int i=0;i<len+1;i++) cout<<tokens[i] <<" ";
-//	cout<<endl;
-	cout<<"________________________"<<endl;
+	int * ranks = new int[len];
+	int * freqs = new int[len];
+	countFreq(combo,len,ranks,freqs);
+	for (int i=0;i<len;i++)
+	{
+            for (int j=0;j<len;j++)
+		{
+		if((freqs[i]==freqs[j])&(i>j)&(ranks[i]<ranks[j]))
+			write=false;
+		}
+	}
+	if(write)	
+	{
+	    myfile2<<line<<endl;
+            cout<<line<<endl;
+	}
+        cout<<line<<endl;
+	
+	//cout<< guess<<endl;//guess is at lower precision than originally, should be to 6sf		   
+        cout<<"-------------------"<<endl;
     }
-*/
     myfile2.close();
     myfile.close();
 }
