@@ -7,23 +7,6 @@
 using namespace std;
 bool array_true=false;
 
-int countDistinct(int *arr, int n)
-{
-    int res = 1;
-
-    for (int i = 1; i < n; i++) {
-	int j = 0;
-        for (j = 0; j < i; j++)
-            if (arr[i] == arr[j])
-                break;
-
-        if (i == j){
-            res++;
-	}
-    }
-    return res;
-}
-
 char* getfn(int it, char* b, char* c, char* d)
 {
     char * fn = new char[20+std::strlen(b)+strlen(c)+5];
@@ -57,62 +40,6 @@ double get_maxt(int *rank, double *guess, int len,int nr) {
     return maxt;
 }
 
-
-void recursively_fill_array(int *ranks, int *combo, double *guess, int &ln, int len, int nr, double tot, int last, int index, int *combos, double *guesses) {
-    for (int i=0;i<nr;i++){
-        combo[index]=ranks[i];
-	if (index == last){
-	     guesses[ln]=get_maxt(combo,guess,len,nr);    
-	     for (int j=0;j<len;j++){ 
-	        combos[ln*len+j]=combo[j];
-	     }
-             ln++;
-	}
-        else
-	    recursively_fill_array(ranks, combo, guess, ln,len, nr, tot, last, index+1, combos, guesses);
-    }
-    return;
-}
-
-
-void loop_fill(int *ranks, int *combo, double *guess, double tot, int len, int nr, int last, int index, ofstream& myfile) {
-    double count=0;
-    while (count<=tot){
-        for (int j=0;j<last;j++){
-            for (int i=0;i<nr;i++){
-                combo[index]=ranks[i];
-                if (index == last){
-                    double maxt=get_maxt(combo,guess,len,nr);
-                    for (int j=0;j<len;j++){
-                        myfile << combo[j] << " ";
-                     }
-                     myfile << maxt << endl;
-                }
-                else
-                    index++;
-	    }
-         }
-	count++;
-     }
-}
-
-
-void recursively_fill(int *ranks, int *combo, double *guess, int len, int nr, int last, int index, ofstream& myfile) {
-    for (int i=0;i<nr;i++){
-        combo[index]=ranks[i];
-        if (index == last){
-	 
-             double maxt=get_maxt(combo,guess,len,nr);
-             for (int j=0;j<len;j++){
-                myfile << combo[j] << " ";
-             }
-                myfile << endl;
-        }
-    else
-        recursively_fill(ranks, combo, guess, len, nr, last, index+1, myfile);
-    }
-}
-
 int* ternary(int n, int b,int len) {
     int * nums = new int[len];
     for(int i=0;i<len;i++) nums[i]=0;
@@ -134,7 +61,9 @@ int* ternary(int n, int b,int len) {
     
 void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
     int i=0;
-    while(true){
+    int nmin=0;
+    double nmax=pow(nr,(len));
+    while((i>=nmin) && (i<nmax)){
         int * combo = new int[len+1];
         for (int j=0;j>len;j++){
             combo[j] = 0;
@@ -142,7 +71,10 @@ void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
         //check there is more than one rank
         if (nr!=1){
             combo=ternary(i,nr,len);
-            if (combo[0]==-1) return;
+            if (combo[0]==-1) {	    
+                cout<<"Nmax too large"<<endl;
+		exit(0);
+	    }
         }
         double maxt=get_maxt(combo,guess,len,nr);
         for (int j=0;j<len;j++){
@@ -251,12 +183,9 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
 	if(write)	
 	{
 	    myfile2<<line<<endl;
-            cout<<line<<endl;
 	}
-        cout<<line<<endl;
 	
 	//cout<< guess<<endl;//guess is at lower precision than originally, should be to 6sf		   
-        cout<<"-------------------"<<endl;
     }
     myfile2.close();
     myfile.close();
