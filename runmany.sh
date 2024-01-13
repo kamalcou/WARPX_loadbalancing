@@ -13,5 +13,5 @@ for i in {1..10}
 do
     #run the application:
     g++ brute_force.cpp
-    ./a.out 4 1 5 2 $i
+    ./a.out 4 1 50 2 $i
 done
