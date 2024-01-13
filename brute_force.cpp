@@ -4,16 +4,19 @@
 #include <random>
 #include <chrono>
 #include <cstring>
+#include "mpi.h"
 using namespace std;
 bool array_true=false;
 
 char* getfn(int it, char* b, char* c, char* d)
 {
     char * fn = new char[20+std::strlen(b)+strlen(c)+5];
-    if (it == 1)std::strcpy(fn,"guess_");
+    if (it == 1)std::strcpy(fn,"guess_"); 
     else if(it == 2)std::strcpy(fn,"ranks_");
+
     else if(it == 3)std::strcpy(fn,"combo_");
     else if(it == 4)std::strcpy(fn,"norep_");
+
     std::strcat(fn,b);
     std::strcat(fn,"_");
     std::strcat(fn,c);
@@ -21,6 +24,14 @@ char* getfn(int it, char* b, char* c, char* d)
     std::strcat(fn,d);
     std::strcat(fn,".txt");
 
+    if((it==3)||(it==4)){
+        int world_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+	char r [6+sizeof(char)];
+        std::sprintf(r,"%d",world_rank);	
+	std::strcat(fn,".");
+	std::strcat(fn,r);
+    }
     return fn;
 }
 
@@ -60,9 +71,15 @@ int* ternary(int n, int b,int len) {
 }
     
 void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
+    int world_size,world_rank;
     int i=0;
-    int nmin=0;
-    double nmax=pow(nr,(len));
+
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+    
+    double nmin=world_rank/world_size*pow(nr,(len));
+    double nmax=(world_rank+1.0)/world_size*pow(nr,(len));
+
     while((i>=nmin) && (i<nmax)){
         int * combo = new int[len+1];
         for (int j=0;j>len;j++){
@@ -195,6 +212,8 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
 int main( int argc, char* argv[]) {
 
 
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     char *itn = new char[10];
     if (argc!=5 and argc!=6){
     cout<< "usage: ./a.out Nranks Nbox_per_rank mean stddev" <<endl;
@@ -202,7 +221,6 @@ int main( int argc, char* argv[]) {
     } 
     else{
 
-    auto start_time = std::chrono::high_resolution_clock::now();
     // get inputs 
     int nr=atoi(argv[1]); 
     int N=atoi(argv[2])*nr; //boxes per rank is the new input
@@ -218,12 +236,15 @@ int main( int argc, char* argv[]) {
     double guess [N];
     int ranks [N];
 
+    //Initialize MPI
+    MPI_Init(NULL,NULL);
     // generate filenames
     char * guess_fn = getfn(1,argv[3],argv[4],itn);
     char * ranks_fn = getfn(2,argv[3],argv[4],itn);
     char * combo_fn = getfn(3,argv[3],argv[4],itn);
     char * temps_fn = getfn(4,argv[3],argv[4],itn);
-
+   
+    cout<<combo_fn<<endl;
     ofstream myfile;
     myfile.open(ranks_fn);
     for (int i = 0; i<nr;i++){
@@ -245,9 +266,10 @@ int main( int argc, char* argv[]) {
 	myfile << guess[i] << " ";
     }
     myfile.close();
-
+    cout<<"get combos"<<endl;
     get_all_combos(N,nr,guess,ranks,combo_fn);
-    eliminate_repetitions(N,nr,combo_fn,temps_fn);
+//    eliminate_repetitions(N,nr,combo_fn,temps_fn);
+    MPI_Finalize();
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
