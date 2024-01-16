@@ -72,14 +72,14 @@ int* ternary(int n, int b,int len) {
     
 void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
     int world_size,world_rank;
-    int i=0;
 
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
     
-    double nmin=world_rank/world_size*pow(nr,(len));
-    double nmax=(world_rank+1.0)/world_size*pow(nr,(len));
-
+    double nmin=double(world_rank)/double(world_size)*pow(nr,(len));
+    double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(len));
+    int i=nmin;
+    cout<<world_rank<<", "<<nmin<<", "<<nmax<<endl;
     while((i>=nmin) && (i<nmax)){
         int * combo = new int[len+1];
         for (int j=0;j>len;j++){
@@ -99,7 +99,7 @@ void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
 	}
 	myfile<<maxt<<endl;
 	i++;
-	} 
+	}
 }
 
 
