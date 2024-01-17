@@ -75,11 +75,9 @@ void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
 
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-    
     double nmin=double(world_rank)/double(world_size)*pow(nr,(len));
     double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(len));
     int i=nmin;
-    cout<<world_rank<<", "<<nmin<<", "<<nmax<<endl;
     while((i>=nmin) && (i<nmax)){
         int * combo = new int[len+1];
         for (int j=0;j>len;j++){
@@ -244,7 +242,6 @@ int main( int argc, char* argv[]) {
     char * combo_fn = getfn(3,argv[3],argv[4],itn);
     char * temps_fn = getfn(4,argv[3],argv[4],itn);
    
-    cout<<combo_fn<<endl;
     ofstream myfile;
     myfile.open(ranks_fn);
     for (int i = 0; i<nr;i++){
@@ -266,7 +263,6 @@ int main( int argc, char* argv[]) {
 	myfile << guess[i] << " ";
     }
     myfile.close();
-    cout<<"get combos"<<endl;
     get_all_combos(N,nr,guess,ranks,combo_fn);
 //    eliminate_repetitions(N,nr,combo_fn,temps_fn);
     MPI_Finalize();

@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH -N 1
+#SBATCH -N 128
 #SBATCH -C cpu
 #SBATCH -q regular
-#SBATCH -t 12:00:00
+#SBATCH -t 00:30:00
 
 #OpenMP settings:
 export OMP_NUM_THREADS=1
@@ -12,7 +12,6 @@ module load cray-mpich
 
 mpicxx -o bf_mpi brute_force.cpp
 #run the application:
-g++ brute_force.cpp
 #./a.out 4 1 5 2
-srun -N 4 bf_mpi 4 2 5 2
+srun -N 128 -n 6144 bf_mpi 6144 16 5 2
 
