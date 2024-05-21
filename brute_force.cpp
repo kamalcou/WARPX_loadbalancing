@@ -10,7 +10,7 @@ bool array_true=false;
 
 char* getfn(int it, char* b, char* c, char* d)
 {
-    char * fn = new char[20+std::strlen(b)+strlen(c)+5];
+    char * fn = new char[20+std::strN(b)+strN(c)+5];
     if (it == 1)std::strcpy(fn,"guess_"); 
     else if(it == 2)std::strcpy(fn,"ranks_");
 
@@ -22,7 +22,7 @@ char* getfn(int it, char* b, char* c, char* d)
     std::strcat(fn,c);
     std::strcat(fn,"_it");
     std::strcat(fn,d);
-    std:cout<<d;
+    
    
 
     if((it==3)||(it==4)){
@@ -37,11 +37,11 @@ char* getfn(int it, char* b, char* c, char* d)
     return fn;
 }
 
-double get_maxt(int *rank, double *guess, int len,int nr) {
+double get_maxt(int *rank, double *guess, int N,int nr) {
     double maxg[nr]={0};
     double maxt=0;
     for (int r=0;r<nr;r++){ // for every rank
-        for (int i=0;i<len;i++) { //for every element
+        for (int i=0;i<N;i++) { //for every element
             if(rank[i]==r){
                 maxg[r]+=guess[i]; // this guess is on rank r so add to the sum
             }
@@ -53,12 +53,12 @@ double get_maxt(int *rank, double *guess, int len,int nr) {
     return maxt;
 }
 
-int* ternary(int n, int b,int len) {
-    int * nums = new int[len];
-    for(int i=0;i<len;i++) nums[i]=0;
-    int L=len;
+int* ternary(int n, int nr,int N) {
+    int * nums = new int[N];
+    for(int i=0;i<N;i++) nums[i]=0;
+    int L=N;
     while (n){
-        auto dv= std::div(n,b);
+        auto dv= std::div(n,nr);
         n = dv.quot;
 	int r = dv.rem;
 	if (L==0){
@@ -72,29 +72,40 @@ int* ternary(int n, int b,int len) {
  
 }
     
-void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
+void basechange_fill(int N, int nr,double *guess,ofstream& myfile) {
     int world_size,world_rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-    double nmin=double(world_rank)/double(world_size)*pow(nr,(len));
-    double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(len));
+    double nmin=double(world_rank)/double(world_size)*pow(nr,(N));
+    // nmin for 
+    /*
+    suppose world_size=2, nr=2, Nbox_per_rank=4, N=2*4=8
+    for 0 rank
+    nmin=0/2*pow(2,8)=0
+    nmax=(0+1)/2*pow(2,8)=0.5*256=128
+    for 1 rank
+    nmin=1/2*pow(2,8)=0.5*256=128
+    nmax=(1+1)/2*pow(2,8)=256
+    
+    */
+    double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(N));
     int i=nmin;
-    while((i>=nmin) && (i<nmax)){
-        int * combo = new int[len+1];
-        for (int j=0;j>len;j++){
+    while((i>=nmin) && (i<nmax)){  // for rank 0 i is 0-127 and rank 1 i is 128-255
+        int * combo = new int[N+1];
+        for (int j=0;j>N;j++){
             combo[j] = 0;
         }
         //check there is more than one rank
         if (nr!=1){
-            combo=ternary(i,nr,len);
+            combo=ternary(i,nr,N);
             if (combo[0]==-1) {	    
                 cout<<"Nmax too large"<<endl;
 		exit(0);
 	    }
         }
-        double maxt=get_maxt(combo,guess,len,nr);
-        for (int j=0;j<len;j++){
+        double maxt=get_maxt(combo,guess,N,nr);
+        for (int j=0;j<N;j++){
 	    myfile<<combo[j]<<" ";
 	}
 	myfile<<maxt<<endl;
@@ -103,15 +114,15 @@ void basechange_fill(int len, int nr,double *guess,ofstream& myfile) {
 }
 
 
-void get_all_combos(int len, int nr, double *guess, int *ranks, char *fn){
+void get_all_combos(int N, int nr, double *guess, int *ranks, char *fn){
 
-    double tot = double(pow(len,nr));
-    int combo[len];
+    //double tot = double(pow(N,nr)); -- no use of this line
+    int combo[N];
     int ln=0;
 
     ofstream myfile;
     myfile.open(fn);
-    basechange_fill(len, nr,guess,myfile);
+    basechange_fill(N, nr,guess,myfile);
     myfile.close();
     return;
     }
@@ -142,7 +153,7 @@ void countFreq(int arr[], int n, int *ranks, int *freqs)
     }
 }
 
-void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
+void eliminate_repetitions(int N, int nr, char *fn, char *tfn){
     
     ifstream myfile;
     myfile.open(fn);
@@ -153,14 +164,14 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
     while(std::getline(myfile,line))
     {
 	bool write=true;
-        int * combo = new int[len];
+        int * combo = new int[N];
 	std::string r;
 	double guess;
 	int j=0;
 	int z=0;
-        for (int i=0;i<line.length();i++)
+        for (int i=0;i<line.Ngth();i++)
 	{
-	    if((line[i]!=' ')&&(i<line.length()-1))
+	    if((line[i]!=' ')&&(i<line.Ngth()-1))
 	    {
                 if(z==0){
 		    r=line[i];
@@ -172,13 +183,13 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
 	    }
 	    else
 	    { //we have reached a space or the end of the line, store what we read and reset r
-                if(j<len and i>0)
+                if(j<N and i>0)
 		{
                     combo[j]=stoi(r);
 		    z=0;
 	            j++;
 		}
-		if(j==len)
+		if(j==N)
 		{
                     guess=stof(r);
 		}
@@ -186,12 +197,12 @@ void eliminate_repetitions(int len, int nr, char *fn, char *tfn){
 	}
       
 
-	int * ranks = new int[len];
-	int * freqs = new int[len];
-	countFreq(combo,len,ranks,freqs);
-	for (int i=0;i<len;i++)
+	int * ranks = new int[N];
+	int * freqs = new int[N];
+	countFreq(combo,N,ranks,freqs);
+	for (int i=0;i<N;i++)
 	{
-            for (int j=0;j<len;j++)
+            for (int j=0;j<N;j++)
 		{
 		if((freqs[i]==freqs[j])&(i>j)&(ranks[i]<ranks[j]))
 			write=false;
@@ -223,7 +234,7 @@ int main( int argc, char* argv[]) {
 
     // get inputs 
     int nr=atoi(argv[1]); //nr= number of ranks
-    int N=atoi(argv[2])*nr; //boxes per rank is the new input
+    int N=atoi(argv[2])*nr; //boxes per rank is the new input. So, N is total number of box
     int mean=atoi(argv[3]); 
     int stddev=atoi(argv[4]);
     if(argc==6){
@@ -238,7 +249,7 @@ int main( int argc, char* argv[]) {
 
     //Initialize MPI
     MPI_Init(NULL,NULL);
-    // generate filenames
+    // generate fiNames
     char * guess_fn = getfn(1,argv[3],argv[4],itn);
     char * ranks_fn = getfn(2,argv[3],argv[4],itn);
     char * combo_fn = getfn(3,argv[3],argv[4],itn);
@@ -262,10 +273,12 @@ int main( int argc, char* argv[]) {
 	    cout<<"negative guess, make mean higher or standard devation smaller"<<endl;
             exit(0);
 	}
-	myfile << guess[i] << " ";
+	myfile << guess[i] << " ";  //write on the guess file guess_meanValue_stdValue_it0
     }
     myfile.close();
-    get_all_combos(N,nr,guess,ranks,combo_fn);
+    get_all_combos(N,nr,guess,ranks,combo_fn);  // N=total number of boxes, nr= number of ranks 
+                                                //guess=based on normal distribution 
+                                                //ranks= collection of ranks number suppose 0-63 for 64 ranks
 //    eliminate_repetitions(N,nr,combo_fn,temps_fn);
     MPI_Finalize();
     auto end_time = std::chrono::high_resolution_clock::now();
