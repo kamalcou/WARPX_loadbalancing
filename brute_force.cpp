@@ -10,7 +10,7 @@ bool array_true=false;
 
 char* getfn(int it, char* b, char* c, char* d)
 {
-    char * fn = new char[20+std::strN(b)+strN(c)+5];
+    char * fn = new char[20+std::strlen(b)+strlen(c)+5];
     if (it == 1)std::strcpy(fn,"guess_"); 
     else if(it == 2)std::strcpy(fn,"ranks_");
 
@@ -169,9 +169,9 @@ void eliminate_repetitions(int N, int nr, char *fn, char *tfn){
 	double guess;
 	int j=0;
 	int z=0;
-        for (int i=0;i<line.Ngth();i++)
+        for (int i=0;i<line.length();i++)
 	{
-	    if((line[i]!=' ')&&(i<line.Ngth()-1))
+	    if((line[i]!=' ')&&(i<line.length()-1))
 	    {
                 if(z==0){
 		    r=line[i];
