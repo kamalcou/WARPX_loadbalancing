@@ -57,6 +57,19 @@ int* ternary(int n, int nr,int N) {
     int * nums = new int[N];
     for(int i=0;i<N;i++) nums[i]=0;
     int L=N;
+    //for rank 1, the call is ternary(128,2,8)
+    //n=128,nr=2, N=8
+    //nums[]=0 0 0 0 0 0 0 0 
+    //for rank 1, the call is ternary(129,2,8)
+    // n=129, nr=2, N=8
+    //n=129/2=64
+    //r=1, nums[8]=1
+    // n=64/2=32
+    //r=0, nums[7]=0
+    //... nums=[-1 0 1 0 1 0 1 0 1 ]
+    //n=130, nr=2, N=8
+    //r=1, nums[8]=1
+
     while (n){
         auto dv= std::div(n,nr);
         n = dv.quot;
@@ -91,14 +104,17 @@ void basechange_fill(int N, int nr,double *guess,ofstream& myfile) {
     */
     double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(N));
     int i=nmin;
-    while((i>=nmin) && (i<nmax)){  // for rank 0 i is 0-127 and rank 1 i is 128-255
+    while((i>=nmin) && (i<nmax)){  // for rank 0, i=0 and rank 1, i=128
         int * combo = new int[N+1];
-        for (int j=0;j>N;j++){
+        for (int j=0;j<N;j++){
             combo[j] = 0;
         }
         //check there is more than one rank
         if (nr!=1){
-            combo=ternary(i,nr,N);
+            combo=ternary(i,nr,N); 
+            //for rank 0, the call is ternary(0,2,8)
+            //for rank 1, the call is ternary(128,2,8)
+            //for rank 1, the call is ternary(129,2,8)
             if (combo[0]==-1) {	    
                 cout<<"Nmax too large"<<endl;
 		exit(0);
