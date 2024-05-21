@@ -22,6 +22,7 @@ char* getfn(int it, char* b, char* c, char* d)
     std::strcat(fn,c);
     std::strcat(fn,"_it");
     std::strcat(fn,d);
+    std:cout<<d;
    
 
     if((it==3)||(it==4)){
@@ -221,9 +222,9 @@ int main( int argc, char* argv[]) {
     else{
 
     // get inputs 
-    int nr=atoi(argv[1]); 
+    int nr=atoi(argv[1]); //nr= number of ranks
     int N=atoi(argv[2])*nr; //boxes per rank is the new input
-    int mean=atoi(argv[3]);
+    int mean=atoi(argv[3]); 
     int stddev=atoi(argv[4]);
     if(argc==6){
         itn=argv[5];
@@ -247,7 +248,7 @@ int main( int argc, char* argv[]) {
     myfile.open(ranks_fn);
     for (int i = 0; i<nr;i++){
         ranks[i]=i;
-        myfile << ranks[i] << " ";
+        myfile << ranks[i] << " ";   // write number of ranks in the ranks_meanValue_stdValue
     }
     myfile.close();
 
@@ -256,7 +257,7 @@ int main( int argc, char* argv[]) {
     std::normal_distribution<double> distribution(mean,stddev);
     myfile.open(guess_fn);
     for (int i=0;i<N;i++){
-        guess[i]=distribution(generator);
+        guess[i]=distribution(generator);  //guess value based on the normal distribution
 	if (guess[i]<0){
 	    cout<<"negative guess, make mean higher or standard devation smaller"<<endl;
             exit(0);
