@@ -1,0 +1,130 @@
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/cccC3XXM.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/cccC3XXM.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/cccC3XXM.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccaZLE5f.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccaZLE5f.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccaZLE5f.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccBIewCI.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccBIewCI.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccBIewCI.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccynnl38.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccynnl38.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccynnl38.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccUKFBgC.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccUKFBgC.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccUKFBgC.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccLn8jT1.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccLn8jT1.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccLn8jT1.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccikv1cx.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccikv1cx.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccikv1cx.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/cc0AtDgZ.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/cc0AtDgZ.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/cc0AtDgZ.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccHjYQdn.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccHjYQdn.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccHjYQdn.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccLnrsgQ.o: in function `getfn(int, char*, char*, char*)':
+brute_force.cpp:(.text+0x14c): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x151): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccLnrsgQ.o: in function `basechange_fill(int, int, double*, std::basic_ofstream<char, std::char_traits<char> >&)':
+brute_force.cpp:(.text+0x40e): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x413): undefined reference to `MPI_Comm_size'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x41f): undefined reference to `ompi_mpi_comm_world'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x424): undefined reference to `MPI_Comm_rank'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: /tmp/ccLnrsgQ.o: in function `main':
+brute_force.cpp:(.text+0xfbf): undefined reference to `MPI_Init'
+/usr/lib64/gcc/x86_64-suse-linux/12/../../../../x86_64-suse-linux/bin/ld: brute_force.cpp:(.text+0x124b): undefined reference to `MPI_Finalize'
+collect2: error: ld returned 1 exit status
+/var/spool/slurmd/job25676476/slurm_script: line 16: ./a.out: No such file or directory

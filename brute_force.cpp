@@ -22,7 +22,7 @@ char* getfn(int it, char* b, char* c, char* d)
     std::strcat(fn,c);
     std::strcat(fn,"_it");
     std::strcat(fn,d);
-    std::strcat(fn,".txt");
+   
 
     if((it==3)||(it==4)){
         int world_rank;
@@ -32,6 +32,7 @@ char* getfn(int it, char* b, char* c, char* d)
 	std::strcat(fn,".");
 	std::strcat(fn,r);
     }
+     std::strcat(fn,".txt");
     return fn;
 }
 
