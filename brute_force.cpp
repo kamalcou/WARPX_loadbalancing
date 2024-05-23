@@ -40,10 +40,10 @@ char* getfn(int it, char* b, char* c, char* d)
 double get_maxt(int *rank, double *guess, int N,int nr) {
     double maxg[nr]={0};
     double maxt=0;
-    for (int r=0;r<nr;r++){ // for every rank
+    for (int r=0;r<nr;r++){ // for every bucket
         for (int i=0;i<N;i++) { //for every element
             if(rank[i]==r){
-                maxg[r]+=guess[i]; // this guess is on rank r so add to the sum
+                maxg[r]+=guess[i]; // this guess is on bucket r so add to the sum
             }
         }
         if (maxg[r]>maxt){
@@ -94,7 +94,7 @@ void basechange_fill(int N, int nr,double *guess,ofstream& myfile) {
     //double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(N));
     // nmin for 
     /*
-    suppose  nr=2, Nbox_per_rank=2, N=2*2=4
+    suppose  nr=number of buckets=2, Nbox_per_bucket=2, N=2*2=4
     for 0 rank
     nmin=0/2*pow(2,4)=0
     nmax=pow(2,4)=16
@@ -109,7 +109,7 @@ void basechange_fill(int N, int nr,double *guess,ofstream& myfile) {
         for (int j=0;j<N;j++){
             combo[j] = 0;
         }
-        //check there is more than one rank
+        //check there is more than one bucket
         if (nr!=1){
             combo=ternary(i,nr,N); 
             //for the call is ternary(0,2,4)
@@ -252,8 +252,8 @@ int main( int argc, char* argv[]) {
     else{
 
     // get inputs 
-    int nr=atoi(argv[1]); //nr= number of ranks
-    int N=atoi(argv[2])*nr; //boxes per rank is the new input. So, N is total number of box
+    int nr=atoi(argv[1]); //nr= number of bucket
+    int N=atoi(argv[2])*nr; //boxes per bucket is the new input. So, N is total number of box
     int mean=atoi(argv[3]); 
     int stddev=atoi(argv[4]);
     if(argc==6){
@@ -278,7 +278,7 @@ int main( int argc, char* argv[]) {
     myfile.open(ranks_fn);
     for (int i = 0; i<nr;i++){
         ranks[i]=i;
-        myfile << ranks[i] << " ";   // write number of ranks in the ranks_meanValue_stdValue
+        myfile << ranks[i] << " ";   // write list of buckets 
     }
     myfile.close();
 
@@ -295,7 +295,7 @@ int main( int argc, char* argv[]) {
 	myfile << guess[i] << " ";  //write on the guess file guess_meanValue_stdValue_it0
     }
     myfile.close();
-    get_all_combos(N,nr,guess,ranks,combo_fn);  // N=total number of boxes, nr= number of ranks 
+    get_all_combos(N,nr,guess,ranks,combo_fn);  // N=total number of boxes, nr= number of buckets 
                                                 //guess=based on normal distribution 
                                                 //ranks= collection of ranks number suppose 0-63 for 64 ranks
 //   eliminate_repetitions(N,nr,combo_fn,temps_fn);
