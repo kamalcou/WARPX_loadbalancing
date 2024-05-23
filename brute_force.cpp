@@ -4,7 +4,7 @@
 #include <random>
 #include <chrono>
 #include <cstring>
-#include "mpi.h"
+//#include "mpi.h"
 using namespace std;
 bool array_true=false;
 
@@ -26,8 +26,8 @@ char* getfn(int it, char* b, char* c, char* d)
    
 
     if((it==3)||(it==4)){
-        int world_rank;
-        MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+        int world_rank=0;
+       // MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 	char r [6+sizeof(char)];
         std::sprintf(r,"%d",world_rank);	
 	std::strcat(fn,".");
@@ -57,54 +57,54 @@ int* ternary(int n, int nr,int N) {
     int * nums = new int[N];
     for(int i=0;i<N;i++) nums[i]=0;
     int L=N;
-    //for rank 1, the call is ternary(128,2,8)
-    //n=128,nr=2, N=8
-    //nums[]=0 0 0 0 0 0 0 0 
-    //for rank 1, the call is ternary(129,2,8)
-    // n=129, nr=2, N=8
-    //n=129/2=64
-    //r=1, nums[8]=1
+    //for  the call is ternary(0,2,4)
+    //n=8,nr=2, N=4
+    //nums[]=0 0 0 0 
+    //for rank 1, the call is ternary(9,2,4)
+    // n=9, nr=2, N=4
+    //n=9/2=4
+    //r=1, nums[4]=1
     // n=64/2=32
-    //r=0, nums[7]=0
-    //... nums=[-1 0 1 0 1 0 1 0 1 ]
-    //n=130, nr=2, N=8
-    //r=1, nums[8]=1
+    //r=0, nums[3]=0
+    //... nums=[-1 0 1 0 1]
+    //n=6, nr=2, N=4
+    //r=0, nums[]=1
 
     while (n){
         auto dv= std::div(n,nr);
         n = dv.quot;
-	int r = dv.rem;
-	if (L==0){
-            nums[0]=-1;
-	    break;
-	}
-	L--;
-        nums[L]=r;
-    }
-    return nums;
+	    int r = dv.rem;
+        if (L==0){
+                nums[0]=-1;
+            break;
+        }
+        L--;
+            nums[L]=r;
+        }
+        return nums;
  
 }
     
 void basechange_fill(int N, int nr,double *guess,ofstream& myfile) {
-    int world_size,world_rank;
+    //int world_size,world_rank;
 
-    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-    double nmin=double(world_rank)/double(world_size)*pow(nr,(N));
+    //MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    //MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+    //double nmin=double(world_rank)/double(world_size)*pow(nr,(N));
+    //double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(N));
     // nmin for 
     /*
-    suppose world_size=2, nr=2, Nbox_per_rank=4, N=2*4=8
+    suppose  nr=2, Nbox_per_rank=2, N=2*2=4
     for 0 rank
-    nmin=0/2*pow(2,8)=0
-    nmax=(0+1)/2*pow(2,8)=0.5*256=128
-    for 1 rank
-    nmin=1/2*pow(2,8)=0.5*256=128
-    nmax=(1+1)/2*pow(2,8)=256
+    nmin=0/2*pow(2,4)=0
+    nmax=pow(2,4)=16
     
     */
-    double nmax=(world_rank+1.0)/double(world_size)*pow(nr,(N));
+    double nmin=0;
+    double nmax=pow(nr,(N));//16
+    
     int i=nmin;
-    while((i>=nmin) && (i<nmax)){  // for rank 0, i=0 and rank 1, i=128
+    while((i>=nmin) && (i<nmax)){  // for rank 0, i=0 
         int * combo = new int[N+1];
         for (int j=0;j<N;j++){
             combo[j] = 0;
@@ -112,20 +112,23 @@ void basechange_fill(int N, int nr,double *guess,ofstream& myfile) {
         //check there is more than one rank
         if (nr!=1){
             combo=ternary(i,nr,N); 
-            //for rank 0, the call is ternary(0,2,8)
-            //for rank 1, the call is ternary(128,2,8)
-            //for rank 1, the call is ternary(129,2,8)
+            //for the call is ternary(0,2,4)
+            //for the call is ternary(1,2,4)
+            //for the call is ternary(3,2,4)
+            //......
+            //for the call is ternary(16,2,4)
+
             if (combo[0]==-1) {	    
                 cout<<"Nmax too large"<<endl;
-		exit(0);
-	    }
+		        exit(0);
+	        }
         }
         double maxt=get_maxt(combo,guess,N,nr);
         for (int j=0;j<N;j++){
 	    myfile<<combo[j]<<" ";
-	}
-	myfile<<maxt<<endl;
-	i++;
+	    }
+	    myfile<<maxt<<endl;
+	    i++;
 	}
 }
 
@@ -264,7 +267,7 @@ int main( int argc, char* argv[]) {
     int ranks [N];
 
     //Initialize MPI
-    MPI_Init(NULL,NULL);
+    //MPI_Init(NULL,NULL);
     // generate fiNames
     char * guess_fn = getfn(1,argv[3],argv[4],itn);
     char * ranks_fn = getfn(2,argv[3],argv[4],itn);
@@ -295,8 +298,8 @@ int main( int argc, char* argv[]) {
     get_all_combos(N,nr,guess,ranks,combo_fn);  // N=total number of boxes, nr= number of ranks 
                                                 //guess=based on normal distribution 
                                                 //ranks= collection of ranks number suppose 0-63 for 64 ranks
-//    eliminate_repetitions(N,nr,combo_fn,temps_fn);
-    MPI_Finalize();
+//   eliminate_repetitions(N,nr,combo_fn,temps_fn);
+   // MPI_Finalize();
     auto end_time = std::chrono::high_resolution_clock::now();
     auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
